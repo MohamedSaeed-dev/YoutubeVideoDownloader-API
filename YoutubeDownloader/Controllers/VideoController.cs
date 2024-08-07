@@ -66,7 +66,7 @@ namespace YoutubeDownloaderCS.Controllers
         {
             try
             {
-                if (urls.Count < 1) return BadRequest(new { message = "Url is missing" });
+                if (urls.Count < 1) return BadRequest(new { message = "Urls is missing" });
                 var result = await _video.DownloadList(urls, quality);
                 return StatusCode(result.StatusCode, new { message = result.Message });
             }

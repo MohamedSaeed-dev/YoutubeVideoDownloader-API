@@ -21,8 +21,8 @@ namespace YoutubeDownloaderCS.Repositories
             if (audio is null) return _response.BadRequest("The Video is not found");
             var stream = await _client.Videos.Streams.GetManifestAsync(url);
             var audioStream = stream.GetAudioOnlyStreams()
-                .OrderByDescending(x => x.Bitrate).
-                FirstOrDefault();
+                .OrderByDescending(x => x.Bitrate)
+                .FirstOrDefault();
             var dateNow = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
             string downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
             var outputFilePath = @$"{downloadsPath}\{audio.Title}_{dateNow}.mp3";

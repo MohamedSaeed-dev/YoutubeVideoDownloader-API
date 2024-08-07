@@ -1,3 +1,5 @@
+using YoutubeDownloaderCS.Helpers.Repositories;
+using YoutubeDownloaderCS.Helpers.Services;
 using YoutubeDownloaderCS.Models;
 using YoutubeDownloaderCS.Repositories;
 using YoutubeDownloaderCS.Services;
@@ -13,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IVideoService, VideoRepository>();
+builder.Services.AddTransient<IVideoHelper, VideoHelper>();
 builder.Services.AddTransient<IAudioService, AudioRepository>();
 builder.Services.AddSingleton<IResponseStatus, ResponseStatusRepository>();
 
