@@ -53,7 +53,6 @@ namespace YoutubeDownloaderCS.Helpers.Repositories
                 .OrderByDescending(x => x.Bitrate)
                 .FirstOrDefault();
             var videoList = stream.GetVideoOnlyStreams()
-                .Where(x => x.Container == Container.Mp4)
                 .Select(x => new VideoQualities
                 {
                     Quality = x.VideoQuality.Label,

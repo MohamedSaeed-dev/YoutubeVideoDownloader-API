@@ -18,10 +18,11 @@ namespace YoutubeDownloaderCS.Repositories
         private readonly IVideoHelper _videoHelper;
         private readonly IResponseStatus _response;
 
-        public VideoRepository(YoutubeClient client, IResponseStatus response)
+        public VideoRepository(YoutubeClient client, IResponseStatus response, IVideoHelper videoHelper)
         {
             _client = client;
             _response = response;
+            _videoHelper = videoHelper;
         }
         public async Task<ResponseStatus> DownloadList(List<string> urls, string quality)
         {
@@ -35,7 +36,7 @@ namespace YoutubeDownloaderCS.Repositories
         public async Task<ResponseStatus> DownloadVideo(string url, string quality)
         {
             var response = await _videoHelper.DownloadAsync(url, quality);
-            if (response.StatusCode != 200) return _response.NotFound("Could not find video or audio streams in the desired quality.");
+            if (response.StatusCode != 200) return _response.Custom(response.StatusCode, response.Message!);
             return _response.Ok("Downloaded successfully");
         }
 
@@ -53,7 +54,7 @@ namespace YoutubeDownloaderCS.Repositories
         public async Task<ResponseStatus> GetVideo(string url)
         {
             var video = await _client.Videos.GetAsync(url);
-            if (video == null) return _response.NotFound("The Video does not exist");
+            if (video is null) return _response.NotFound("The Video does not exist");
 
             var thumbnail = video.Thumbnails.LastOrDefault(x => x.Resolution.Width > 700);
             var stream = await _client.Videos.Streams.GetManifestAsync(video.Id);
